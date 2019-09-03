@@ -1,19 +1,29 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import uuid from 'uuid/v4';
 
 class NewBoxForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {height: '', width: '', color: ''};
 		this.handleChange = this.handleChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	handleChange(e){
 		this.setState({
 			[e.target.name]: e.target.value
-		})
+		});
+	}
+	handleSubmit(e){
+		e.preventDefault();
+		const newBox = {...this.state, id: uuid() };
+		this.props.createBox(newBox);
+		this.setState({
+			height: '', width: '', color: ''
+		});
 	}
 	render() {
 		return (
-			<form>
+			<form onSubmit={this.handleSubmit}>
 				<div>
 					<label htmlFor='height'>Height</label>
 					<input 
@@ -44,6 +54,7 @@ class NewBoxForm extends Component {
 						id='color'
 					/>
 				</div>
+				<button>Add Box!</button>
 			</form>
 		);
 	}
